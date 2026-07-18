@@ -1,31 +1,41 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "system-ui", "-apple-system", "sans-serif";
+  --font-mono: "JetBrains Mono", "Fira Code", "monospace";
+
+  --color-surface: #f9fafb;
+  --color-surface-card: #ffffff;
+  --color-surface-elevated: #f3f4f6;
+  --color-surface-border: #e5e7eb;
+
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
+  --color-accent-muted: rgba(124, 58, 237, 0.08);
+  --color-accent-glow: rgba(124, 58, 237, 0.15);
+
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #9ca3af;
+
+  --color-winner-gold: #d97706;
+  --color-winner-gold-muted: rgba(217, 119, 6, 0.08);
+
+  --color-score-high: #059669;
+  --color-score-mid: #d97706;
+  --color-score-low: #dc2626;
+
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-glow: 0 0 30px rgba(124,58,237,0.15);
+  --shadow-glow-gold: 0 0 20px rgba(245,158,11,0.2);
+
+  --animate-fade-up: fadeUp 0.4s ease both;
+  --animate-fade-in: fadeIn 0.3s ease both;
+  --animate-shimmer: shimmer 2s linear infinite;
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+}
 
 @layer base {
-  :root {
-    --color-surface: #f9fafb;
-    --color-surface-card: #ffffff;
-    --color-surface-elevated: #f3f4f6;
-    --color-surface-border: #e5e7eb;
-
-    --color-accent: #7c3aed;
-    --color-accent-hover: #6d28d9;
-    --color-accent-muted: rgba(124, 58, 237, 0.08);
-    --color-accent-glow: rgba(124, 58, 237, 0.15);
-
-    --color-text-primary: #111827;
-    --color-text-secondary: #4b5563;
-    --color-text-muted: #9ca3af;
-
-    --color-winner-gold: #d97706;
-    --color-winner-gold-muted: rgba(217, 119, 6, 0.08);
-
-    --color-score-high: #059669;
-    --color-score-mid: #d97706;
-    --color-score-low: #dc2626;
-  }
-
   .dark {
     --color-surface: #0c0c0e;
     --color-surface-card: #111115;
@@ -50,17 +60,22 @@
   }
 
   * {
-    @apply border-surface-border;
+    border-color: var(--color-surface-border);
   }
 
   html {
-    @apply bg-surface text-text-primary font-sans antialiased;
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     scrollbar-width: thin;
     scrollbar-color: #1e1e24 transparent;
   }
 
   body {
-    @apply bg-surface min-h-screen;
+    background-color: var(--color-surface);
+    min-height: 100vh;
   }
 
   ::-webkit-scrollbar {
@@ -96,26 +111,69 @@
   }
 
   .card {
-    @apply bg-surface-card border border-surface-border rounded-xl shadow-card;
+    background-color: var(--color-surface-card);
+    border: 1px solid var(--color-surface-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
   }
 
   .card-elevated {
-    @apply bg-surface-elevated border border-surface-border rounded-xl shadow-card;
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-surface-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white text-sm font-medium
-           hover:bg-accent-hover active:scale-95 transition-all duration-150 shadow-glow
-           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-accent);
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 500;
+    box-shadow: 0 0 30px rgba(124,58,237,0.15);
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-accent-hover);
+  }
+  .btn-primary:active {
+    transform: scale(0.95);
+  }
+  .btn-primary:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-text-secondary text-xs font-medium
-           hover:bg-surface-elevated hover:text-text-primary transition-all duration-150;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.375rem;
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn-ghost:hover {
+    background-color: var(--color-surface-elevated);
+    color: var(--color-text-primary);
   }
 
   .score-pill {
-    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold font-mono;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: "JetBrains Mono", "Fira Code", monospace;
   }
 }
 

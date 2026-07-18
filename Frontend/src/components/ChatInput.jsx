@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
-import { Send, Loader2, CornerDownLeft } from "lucide-react";
+import { Send, Loader2 } from "lucide-react";
 
 export default function ChatInput({ onSubmit, isLoading }) {
   const [value, setValue] = useState("");
   const textareaRef = useRef(null);
 
-  // Auto-resize textarea
+  // Auto-resize text container dynamically
   useEffect(() => {
     const ta = textareaRef.current;
     if (!ta) return;
@@ -30,11 +30,10 @@ export default function ChatInput({ onSubmit, isLoading }) {
   return (
     <div className="w-full max-w-3xl mx-auto px-4 sm:px-0">
       <div
-        className={`relative card transition-all duration-200 ${
-          isLoading
-            ? "opacity-60"
-            : "hover:border-accent/30 focus-within:border-accent/50 focus-within:shadow-glow"
-        }`}
+        className={`relative card transition-all duration-200 ${isLoading
+          ? "opacity-60"
+          : "hover:border-accent/30 focus-within:border-accent/50 focus-within:shadow-glow"
+          }`}
       >
         <textarea
           ref={textareaRef}
@@ -49,7 +48,7 @@ export default function ChatInput({ onSubmit, isLoading }) {
           style={{ minHeight: "56px" }}
         />
 
-        {/* Footer row */}
+        {/* Action tray layout controls */}
         <div className="absolute bottom-3 left-4 right-3 flex items-center justify-between">
           <p className="text-xs text-text-muted">
             <kbd className="inline-flex items-center gap-0.5 font-mono text-[10px] border border-surface-border rounded px-1 py-0.5 text-text-muted mr-1">
@@ -66,7 +65,7 @@ export default function ChatInput({ onSubmit, isLoading }) {
             id="submit-prompt-btn"
             onClick={handleSubmit}
             disabled={!value.trim() || isLoading}
-            className="btn-primary px-3 py-1.5 text-xs gap-1.5"
+            className="btn-primary px-3 py-1.5 text-xs gap-1.5 flex items-center rounded-lg ps-fixed"
           >
             {isLoading ? (
               <>

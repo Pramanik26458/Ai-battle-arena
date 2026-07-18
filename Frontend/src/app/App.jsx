@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Swords, CornerRightDown, Zap } from "lucide-react";
+import { Swords, Zap } from "lucide-react";
 import Header from "../components/Header";
 import ChatInput from "../components/ChatInput";
 import ProblemCard from "../components/ProblemCard";
@@ -8,7 +8,7 @@ import JudgePanel from "../components/JudgePanel";
 import LoadingState from "../components/LoadingState";
 import { fetchComparison } from "../lib/mockApi";
 
-// ── Hero / Empty State ───────────────────────────────────────────────────────
+// ── Empty State / Hero view ──────────────────────────────────────────────────
 function EmptyState({ onExampleClick }) {
   const examples = [
     "Write a binary search function in TypeScript",
@@ -19,7 +19,6 @@ function EmptyState({ onExampleClick }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[55vh] text-center space-y-10 animate-fade-up px-4">
-      {/* Logo mark */}
       <div className="relative">
         <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center shadow-glow mx-auto">
           <Swords size={28} className="text-white" />
@@ -27,11 +26,9 @@ function EmptyState({ onExampleClick }) {
         <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-accent blur-2xl opacity-30 mx-auto animate-pulse-slow" />
       </div>
 
-      {/* Headline */}
       <div className="space-y-3 max-w-lg">
         <h1 className="text-3xl sm:text-4xl font-bold text-text-primary tracking-tight leading-tight">
-          Compare AI Solutions{" "}
-          <span className="text-accent">Side by Side</span>
+          Compare AI Solutions <span className="text-accent">Side by Side</span>
         </h1>
         <p className="text-text-secondary text-base leading-relaxed">
           Submit any prompt and get two independent AI-generated solutions,
@@ -39,7 +36,6 @@ function EmptyState({ onExampleClick }) {
         </p>
       </div>
 
-      {/* Example prompts */}
       <div className="space-y-2.5 w-full max-w-xl">
         <p className="text-xs text-text-muted uppercase tracking-widest font-medium flex items-center gap-1.5 justify-center">
           <Zap size={11} className="text-accent" />
@@ -98,13 +94,14 @@ function ResultsView({ data }) {
   );
 }
 
-// ── Root App ─────────────────────────────────────────────────────────────────
+// ── Root App Component ────────────────────────────────────────────────────────
 export default function App() {
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
+  const [currentPrompt, setCurrentPrompt] = useState(""); // Captures prompt context during ongoing requests
+
   const [isDark, setIsDark] = useState(() => {
-    // Check local storage or system preference
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("theme");
       if (saved) return saved === "dark";
@@ -113,7 +110,7 @@ export default function App() {
     return true;
   });
 
-  // Effect to apply class
+  // Dark mode theme sync
   useEffect(() => {
     if (typeof window !== "undefined") {
       const root = window.document.documentElement;
@@ -128,31 +125,29 @@ export default function App() {
   }, [isDark]);
 
   const toggleTheme = () => {
-    setIsDark((prev) => {
-      const next = !prev;
-      const root = window.document.documentElement;
-      if (next) {
-        root.classList.add("dark");
-        localStorage.setItem("theme", "dark");
-      } else {
-        root.classList.remove("dark");
-        localStorage.setItem("theme", "light");
-      }
-      return next;
-    });
+    setIsDark((prev) => !prev);
   };
 
   const handleSubmit = async (prompt) => {
     setStatus("loading");
+    setCurrentPrompt(prompt); // Instantly preserve user prompt for the loader state
     setResult(null);
     setError(null);
 
     try {
+      // Makes real network call via Axios inside mockApi
       const res = await fetchComparison(prompt);
-      setResult(res.data);
-      setStatus("done");
+
+      // The backend packages data inside a 'data' property
+      if (res.success && res.data) {
+        setResult(res.data);
+        setStatus("done");
+      } else {
+        throw new Error(res.message || "Failed to process the AI Arena response.");
+      }
     } catch (err) {
-      setError(err.message || "Something went wrong. Please try again.");
+      console.error("API error encountered:", err);
+      setError(err.response?.data?.message || err.message || "Something went wrong. Please try again.");
       setStatus("error");
     }
   };
@@ -165,37 +160,41 @@ export default function App() {
     <div className="min-h-screen bg-surface flex flex-col transition-colors duration-200">
       <Header isDark={isDark} onToggleTheme={toggleTheme} />
 
-      {/* Main content */}
+      {/* Main layout frame */}
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 space-y-8">
-        {/* Content area */}
         {status === "idle" && (
           <EmptyState onExampleClick={handleExampleClick} />
         )}
 
-        {status === "loading" && <LoadingState />}
+        {status === "loading" && (
+          <div className="space-y-5 animate-fade-in">
+            {/* Renders your problem panel instantly to replicate Perplexity layout */}
+            <ProblemCard problem={currentPrompt} />
+            <LoadingState />
+          </div>
+        )}
 
         {status === "done" && result && (
           <ResultsView data={result} />
         )}
 
-        {/* Chat input — placed at the bottom */}
+        {/* Global sticky/floating prompt bar */}
         <ChatInput onSubmit={handleSubmit} isLoading={status === "loading"} />
 
         {status === "error" && (
-          <div className="animate-fade-up card px-5 py-6 text-center space-y-2">
-            <p className="text-sm font-medium text-red-400">Error</p>
-            <p className="text-sm text-text-secondary">{error}</p>
+          <div className="animate-fade-up card px-5 py-6 text-center space-y-3 border-red-500/20 bg-red-500/5">
+            <p className="text-sm font-semibold text-red-400">Execution Error</p>
+            <p className="text-xs text-text-secondary max-w-md mx-auto">{error}</p>
             <button
               onClick={() => setStatus("idle")}
-              className="btn-ghost mt-2 mx-auto"
+              className="btn-ghost mt-2 mx-auto text-xs px-4 py-1.5 border border-surface-border rounded-lg"
             >
-              Try again
+              Dismiss & Try Again
             </button>
           </div>
         )}
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-surface-border py-5 px-4 text-center">
         <p className="text-xs text-text-muted">
           AI Battle Arena — Compare, Evaluate, Choose

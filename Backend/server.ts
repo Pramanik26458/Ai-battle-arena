@@ -1,5 +1,7 @@
 import app from "./src/app.js";
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
-})
+const PORT = 3000;
+
+app.listen(PORT, () => {
+  console.log(`🚀 AI Battle Arena Server live at http://localhost:${PORT}`);
+});
