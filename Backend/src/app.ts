@@ -30,3 +30,4 @@ app.post("/use-graph", async (req, res) => {
 });
 
 export default app;
+

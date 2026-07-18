@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-surface: #f9fafb;
+    --color-surface-card: #ffffff;
+    --color-surface-elevated: #f3f4f6;
+    --color-surface-border: #e5e7eb;
+
+    --color-accent: #7c3aed;
+    --color-accent-hover: #6d28d9;
+    --color-accent-muted: rgba(124, 58, 237, 0.08);
+    --color-accent-glow: rgba(124, 58, 237, 0.15);
+
+    --color-text-primary: #111827;
+    --color-text-secondary: #4b5563;
+    --color-text-muted: #9ca3af;
+
+    --color-winner-gold: #d97706;
+    --color-winner-gold-muted: rgba(217, 119, 6, 0.08);
+
+    --color-score-high: #059669;
+    --color-score-mid: #d97706;
+    --color-score-low: #dc2626;
+  }
+
+  .dark {
+    --color-surface: #0c0c0e;
+    --color-surface-card: #111115;
+    --color-surface-elevated: #18181d;
+    --color-surface-border: #1e1e24;
+
+    --color-accent: #7c3aed;
+    --color-accent-hover: #6d28d9;
+    --color-accent-muted: rgba(124, 58, 237, 0.12);
+    --color-accent-glow: rgba(124, 58, 237, 0.25);
+
+    --color-text-primary: #f0f0f4;
+    --color-text-secondary: #8b8b9a;
+    --color-text-muted: #52525e;
+
+    --color-winner-gold: #f59e0b;
+    --color-winner-gold-muted: rgba(245, 158, 11, 0.12);
+
+    --color-score-high: #10b981;
+    --color-score-mid: #f59e0b;
+    --color-score-low: #ef4444;
+  }
+
+  * {
+    @apply border-surface-border;
+  }
+
+  html {
+    @apply bg-surface text-text-primary font-sans antialiased;
+    scrollbar-width: thin;
+    scrollbar-color: #1e1e24 transparent;
+  }
+
+  body {
+    @apply bg-surface min-h-screen;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1e1e24;
+    border-radius: 99px;
+  }
+
+  ::selection {
+    background: rgba(124, 58, 237, 0.3);
+    color: #f0f0f4;
+  }
+}
+
+@layer components {
+  .shimmer-bg {
+    background: linear-gradient(
+      90deg,
+      #111115 0%,
+      #1a1a20 50%,
+      #111115 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  .card {
+    @apply bg-surface-card border border-surface-border rounded-xl shadow-card;
+  }
+
+  .card-elevated {
+    @apply bg-surface-elevated border border-surface-border rounded-xl shadow-card;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-accent text-white text-sm font-medium
+           hover:bg-accent-hover active:scale-95 transition-all duration-150 shadow-glow
+           disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-text-secondary text-xs font-medium
+           hover:bg-surface-elevated hover:text-text-primary transition-all duration-150;
+  }
+
+  .score-pill {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-semibold font-mono;
+  }
+}
+
+/* Fade-up animation with stagger support */
+.animate-fade-up {
+  animation: fadeUp 0.4s ease both;
+}
+
+.animate-fade-up.delay-100 { animation-delay: 0.1s; }
+.animate-fade-up.delay-200 { animation-delay: 0.2s; }
+.animate-fade-up.delay-300 { animation-delay: 0.3s; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Syntax highlighter overrides */
+.syntax-block {
+  border-radius: 0.5rem !important;
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: 0.8125rem !important;
+  line-height: 1.6 !important;
+  border: 1px solid #1e1e24 !important;
+  margin: 0.75rem 0 !important;
+}
+
+/* Prose overrides for dark backgrounds */
+.prose code:not([class]) {
+  background: rgba(124, 58, 237, 0.12);
+  color: #a78bfa;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8125em;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+.prose code:not([class])::before,
+.prose code:not([class])::after {
+  content: "" !important;
+}
