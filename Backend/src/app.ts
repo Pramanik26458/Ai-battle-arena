@@ -28,18 +28,17 @@ app.use(cors({
   credentials: true,
 }));
 
-// 1. Health check route
+// Health check route
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "success",
-    message: "Welcome to the AI Battle Arena API!",
+    message: "Welcome to the ModelBench AI API!",
   });
 });
 
-// 2. The dynamic route linked to your AI Graph workflow
+// AI Graph workflow invocation route
 app.post("/invoke", async (req, res) => {
   try {
-    // FIX: Changed from 'input' to 'prompt' to match the Axios request body perfectly
     const { prompt } = req.body; 
 
     if (!prompt) {
@@ -49,10 +48,8 @@ app.post("/invoke", async (req, res) => {
       });
     }
 
-    // Call your graph processing engine
     const result = await runGraph(prompt);
 
-    // FIX: Encapsulated response matching what App.jsx expects (res.success && res.data)
     res.status(200).json({
       message: "Graph executed successfully",
       success: true,
@@ -67,7 +64,7 @@ app.post("/invoke", async (req, res) => {
   }
 });
 
-// 3. Testing route placeholder
+// Testing route
 app.post("/use-graph", async (req, res) => {
   try {
     const result = await runGraph("write a factorial function in js");
@@ -84,5 +81,4 @@ app.post("/use-graph", async (req, res) => {
   }
 });
 
-// ALWAYS keep export default at the absolute end of the file structure
 export default app;

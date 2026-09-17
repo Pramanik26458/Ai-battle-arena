@@ -2,15 +2,31 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AI Battle Arena — Compare AI Solutions Side by Side</title>
-    <meta name="description" content="Submit a prompt and get two AI-generated solutions with a judge recommendation. Compare, evaluate, and choose the best AI response." />
+    <meta name="theme-color" content="#090d16" />
+    <title>ModelBench AI — Autonomous LLM Benchmarking & Evaluation</title>
+    <meta name="description" content="Submit any engineering problem to benchmark two AI models head-to-head with autonomous AI judge scoring and critique." />
+    
+    <!-- Preconnect to Google Fonts for sub-second early loading -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/assets/index-SgfFptDd.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-B50EAGOd.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <!-- Inline Script to prevent FOUC / white theme flash before hydration -->
+    <script>
+      try {
+        const theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        } else if (theme === 'light') {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (_) {}
+    </script>
+    <script type="module" crossorigin src="/assets/index-Bv0BfbiB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DVIReJFj.css">
   </head>
   <body>
     <div id="root"></div>

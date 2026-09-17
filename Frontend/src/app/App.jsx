@@ -67,7 +67,7 @@ function EmptyState({ onExampleClick }) {
       <div className="w-full space-y-3 pt-2">
         <div className="flex items-center justify-center gap-2 text-xs text-text-muted font-semibold uppercase tracking-wider">
           <Zap size={13} className="text-indigo-400" />
-          <span>Select an example to launch the battle</span>
+          <span>Select an example to run a benchmark</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -212,7 +212,7 @@ export default function App() {
         setResult(res.data);
         setStatus("done");
       } else {
-        throw new Error(res.message || "Failed to process the AI Arena response.");
+        throw new Error(res.message || "Failed to process the ModelBench response.");
       }
     } catch (err) {
       console.error("API error encountered:", err);
@@ -268,13 +268,13 @@ export default function App() {
               className="btn-ghost mt-2 mx-auto text-xs px-4 py-2 border border-surface-border rounded-xl flex items-center gap-1.5 hover:border-text-secondary/40 cursor-pointer"
             >
               <RefreshCw size={13} />
-              <span>Dismiss & Return to Arena</span>
+              <span>Dismiss & Return to Bench</span>
             </button>
           </div>
         )}
       </main>
 
-      {/* FIXED BOTTOM INPUT DOCK - Always fixed before and after response (like ChatGPT, Claude, Gemini) */}
+      {/* Fixed bottom input dock */}
       <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 sm:pb-6 pt-6 bg-gradient-to-t from-surface via-surface/95 to-transparent pointer-events-none">
         <div className="max-w-3xl mx-auto pointer-events-auto">
           <ChatInput
@@ -283,11 +283,11 @@ export default function App() {
             placeholder={
               status === "idle"
                 ? "Ask anything — compare two AI solutions side by side..."
-                : "Ask another prompt to trigger a new AI battle..."
+                : "Ask another prompt to run a new benchmark..."
             }
           />
           <p className="text-[11px] sm:text-xs text-text-muted text-center mt-2.5 select-none">
-            AI Battle Arena compares independent LLMs. Scores provided by automated AI judge.
+            ModelBench AI benchmarks independent LLMs. Scores provided by automated AI judge.
           </p>
         </div>
       </div>

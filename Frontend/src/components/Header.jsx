@@ -8,7 +8,7 @@ export default function Header({ isDark, onToggleTheme, showNewBattle, onNewBatt
         <div
           onClick={onNewBattle}
           className={`flex items-center gap-2.5 group ${showNewBattle ? "cursor-pointer" : "cursor-default"}`}
-          title={showNewBattle ? "Back to Battle Arena Home" : undefined}
+          title={showNewBattle ? "Back to ModelBench AI Home" : undefined}
         >
           <div className="relative">
             <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-glow transition-transform duration-300 group-hover:scale-105 border border-white/20">
@@ -18,11 +18,11 @@ export default function Header({ isDark, onToggleTheme, showNewBattle, onNewBatt
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-sm sm:text-base font-bold tracking-tight text-text-primary">
-              AI Battle Arena
+            <span className="text-sm sm:text-base font-extrabold tracking-tight text-text-primary flex items-center">
+              Model<span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">Bench</span>
             </span>
             <span className="hidden sm:inline-block text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-              v2.0
+              AI
             </span>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function Header({ isDark, onToggleTheme, showNewBattle, onNewBatt
               className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 transition-all duration-150 active:scale-95 shadow-xs"
             >
               <Plus size={13} />
-              <span>New Battle</span>
+              <span>New Benchmark</span>
             </button>
           )}
 
