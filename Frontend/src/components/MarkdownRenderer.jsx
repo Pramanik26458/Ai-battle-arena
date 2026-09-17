@@ -2,12 +2,12 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Terminal } from "lucide-react";
 
 function CodeBlock({ children, className }) {
   const [copied, setCopied] = useState(false);
   const match = /language-(\w+)/.exec(className || "");
-  const language = match ? match[1] : "text";
+  const language = match ? match[1] : "code";
   const code = String(children).replace(/\n$/, "");
 
   const handleCopy = () => {
@@ -18,52 +18,79 @@ function CodeBlock({ children, className }) {
   };
 
   return (
-    <div className="relative group/code my-3">
-      {/* Language label + copy */}
-      <div className="absolute top-2 right-2 flex items-center gap-2 opacity-0 group-hover/code:opacity-100 transition-opacity z-10">
-        <span className="text-[10px] font-mono text-text-muted bg-surface/80 border border-surface-border rounded px-1.5 py-0.5">
-          {language}
-        </span>
+    <div className="relative group/code my-4 rounded-xl overflow-hidden border border-surface-border bg-[#0d0f18] shadow-md">
+      {/* Code Header Bar */}
+      <div className="flex items-center justify-between px-4 py-2.5 bg-[#131724]/90 border-b border-white/5 select-none">
+        <div className="flex items-center gap-2">
+          {/* Mac-style traffic lights */}
+          <div className="flex items-center gap-1.5 mr-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+          </div>
+          <div className="flex items-center gap-1.5 text-xs font-mono font-medium text-slate-400">
+            <Terminal size={13} className="text-indigo-400" />
+            <span>{language}</span>
+          </div>
+        </div>
+
+        {/* Copy Button */}
         <button
           onClick={handleCopy}
-          className="p-1 rounded bg-surface/80 border border-surface-border text-text-muted hover:text-text-primary transition-colors"
+          className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-all duration-150 border border-white/5 active:scale-95 cursor-pointer"
           title="Copy code"
         >
-          {copied ? <Check size={11} className="text-score-high" /> : <Copy size={11} />}
+          {copied ? (
+            <>
+              <Check size={13} className="text-emerald-400" />
+              <span className="text-emerald-400 font-semibold">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy size={13} />
+              <span>Copy</span>
+            </>
+          )}
         </button>
       </div>
 
-      <SyntaxHighlighter
-        style={oneDark}
-        language={language}
-        PreTag="div"
-        className="syntax-block !rounded-lg !text-xs !m-0"
-        customStyle={{
-          background: "#0d0d11",
-          borderColor: "#1e1e24",
-          padding: "1rem 1.25rem",
-        }}
-        codeTagProps={{ style: { fontFamily: '"JetBrains Mono", monospace' } }}
-      >
-        {code}
-      </SyntaxHighlighter>
+      {/* Syntax Code Body */}
+      <div className="text-xs sm:text-[13px] font-mono overflow-x-auto leading-relaxed">
+        <SyntaxHighlighter
+          style={oneDark}
+          language={language}
+          PreTag="div"
+          className="syntax-block !bg-transparent !m-0 !p-4"
+          customStyle={{
+            background: "transparent",
+            margin: 0,
+            padding: "1.1rem 1.35rem",
+          }}
+          codeTagProps={{ style: { fontFamily: '"JetBrains Mono", monospace' } }}
+        >
+          {code}
+        </SyntaxHighlighter>
+      </div>
     </div>
   );
 }
 
 export default function MarkdownRenderer({ content }) {
   return (
-    <div className="prose prose-invert prose-sm max-w-none
-      prose-p:text-text-secondary prose-p:leading-relaxed prose-p:my-2
-      prose-headings:text-text-primary prose-headings:font-semibold
-      prose-h1:text-base prose-h2:text-sm prose-h3:text-sm
-      prose-strong:text-text-primary prose-strong:font-semibold
+    <div className="prose dark:prose-invert prose-base max-w-none
+      prose-p:text-text-secondary prose-p:leading-relaxed prose-p:my-3 prose-p:text-[15px] sm:prose-p:text-base
+      prose-headings:text-text-primary prose-headings:font-bold prose-headings:tracking-tight
+      prose-h1:text-xl prose-h2:text-lg prose-h3:text-base
+      prose-strong:text-text-primary prose-strong:font-bold
       prose-em:text-text-secondary
-      prose-ul:text-text-secondary prose-ol:text-text-secondary
-      prose-li:my-0.5
-      prose-blockquote:border-accent/40 prose-blockquote:text-text-muted
+      prose-ul:text-text-secondary prose-ul:my-2.5 prose-ol:text-text-secondary prose-ol:my-2.5
+      prose-li:my-1 prose-li:leading-relaxed prose-li:text-[15px] sm:prose-li:text-base
+      prose-blockquote:border-l-2 prose-blockquote:border-indigo-500 prose-blockquote:bg-indigo-500/5 prose-blockquote:py-1.5 prose-blockquote:px-3.5 prose-blockquote:rounded-r-lg prose-blockquote:text-text-secondary prose-blockquote:text-[15px]
       prose-hr:border-surface-border
-      prose-a:text-accent prose-a:no-underline hover:prose-a:underline
+      prose-a:text-indigo-400 prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+      prose-table:border-collapse prose-table:w-full prose-table:my-3.5
+      prose-th:border prose-th:border-surface-border prose-th:bg-surface-elevated prose-th:p-2.5 prose-th:text-left prose-th:text-xs sm:prose-th:text-sm prose-th:font-semibold prose-th:text-text-primary
+      prose-td:border prose-td:border-surface-border prose-td:p-2.5 prose-td:text-xs sm:prose-td:text-sm prose-td:text-text-secondary
     ">
       <ReactMarkdown
         components={{

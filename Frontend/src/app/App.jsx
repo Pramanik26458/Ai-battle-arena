@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Swords, Zap } from "lucide-react";
+import { Swords, Zap, Bot, Cpu, Scale, Sparkles, AlertCircle, RefreshCw, Layers } from "lucide-react";
 import Header from "../components/Header";
 import ChatInput from "../components/ChatInput";
 import ProblemCard from "../components/ProblemCard";
@@ -8,53 +8,106 @@ import JudgePanel from "../components/JudgePanel";
 import LoadingState from "../components/LoadingState";
 import { fetchComparison } from "../lib/mockApi";
 
-// ── Empty State / Hero view ──────────────────────────────────────────────────
+// ── Hero / Empty State View (ChatGPT / Gemini / Claude Style) ────────────────
 function EmptyState({ onExampleClick }) {
   const examples = [
-    "Write a binary search function in TypeScript",
-    "Explain React's useEffect hook in depth",
-    "Design a rate limiter for 10k RPS",
-    "Build a debounce utility in JavaScript",
+    {
+      category: "Algorithm",
+      title: "Binary search in TypeScript with edge cases",
+      icon: "⚡",
+    },
+    {
+      category: "Frontend",
+      title: "Explain React's useEffect pitfalls & cleanups",
+      icon: "💡",
+    },
+    {
+      category: "Architecture",
+      title: "Design a distributed rate limiter for 10k RPS",
+      icon: "🏗️",
+    },
+    {
+      category: "Utility",
+      title: "Build a modern debounce utility in JavaScript",
+      icon: "🔧",
+    },
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[55vh] text-center space-y-10 animate-fade-up px-4">
-      <div className="relative">
-        <div className="w-16 h-16 rounded-2xl bg-accent flex items-center justify-center shadow-glow mx-auto">
-          <Swords size={28} className="text-white" />
+    <div className="w-full max-w-3xl mx-auto flex flex-col items-center justify-center text-center space-y-6 sm:space-y-8 animate-fade-up my-auto py-4">
+      {/* Top Dual Engine Badge */}
+      <div className="inline-flex items-center gap-2.5 bg-surface-card/90 backdrop-blur-md py-1.5 px-4 rounded-full border border-surface-border shadow-sm">
+        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-indigo-400">
+          <Bot size={15} />
+          <span>Model A</span>
         </div>
-        <div className="absolute inset-0 w-16 h-16 rounded-2xl bg-accent blur-2xl opacity-30 mx-auto animate-pulse-slow" />
+        <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-500 to-cyan-500 flex items-center justify-center text-white shadow-glow text-[10px] font-black">
+          VS
+        </div>
+        <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold text-cyan-400">
+          <span>Model B</span>
+          <Cpu size={15} />
+        </div>
       </div>
 
-      <div className="space-y-3 max-w-lg">
-        <h1 className="text-3xl sm:text-4xl font-bold text-text-primary tracking-tight leading-tight">
-          Compare AI Solutions <span className="text-accent">Side by Side</span>
+      {/* Hero Headline with larger, bolder typography */}
+      <div className="space-y-3 max-w-2xl">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-text-primary tracking-tight leading-tight">
+          Two AI Models Enter. <br />
+          <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            One Champion Solution.
+          </span>
         </h1>
-        <p className="text-text-secondary text-base leading-relaxed">
-          Submit any prompt and get two independent AI-generated solutions,
-          then let the judge pick the best one.
+        <p className="text-text-secondary text-sm sm:text-base lg:text-lg leading-relaxed max-w-lg mx-auto">
+          Submit any engineering problem to evaluate two models head-to-head with autonomous AI judge scoring and critique.
         </p>
       </div>
 
-      <div className="space-y-2.5 w-full max-w-xl">
-        <p className="text-xs text-text-muted uppercase tracking-widest font-medium flex items-center gap-1.5 justify-center">
-          <Zap size={11} className="text-accent" />
-          Try an example
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+      {/* Quick Example Suggestions */}
+      <div className="w-full space-y-3 pt-2">
+        <div className="flex items-center justify-center gap-2 text-xs text-text-muted font-semibold uppercase tracking-wider">
+          <Zap size={13} className="text-indigo-400" />
+          <span>Select an example to launch the battle</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {examples.map((ex) => (
             <button
-              key={ex}
-              onClick={() => onExampleClick(ex)}
-              className="text-left px-4 py-3 rounded-xl card text-sm text-text-secondary
-                         hover:text-text-primary hover:border-accent/30 hover:bg-accent-muted
-                         transition-all duration-150 group"
+              key={ex.title}
+              onClick={() => onExampleClick(ex.title)}
+              className="text-left p-3.5 sm:p-4 rounded-2xl card hover:border-indigo-500/50 hover:bg-surface-elevated/90
+                         transition-all duration-200 group flex items-center gap-3 cursor-pointer shadow-sm hover:shadow-md"
             >
-              <span className="text-accent mr-2 opacity-60 group-hover:opacity-100">→</span>
-              {ex}
+              <span className="text-base sm:text-lg flex-shrink-0">{ex.icon}</span>
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-400 block mb-0.5">
+                  {ex.category}
+                </span>
+                <p className="text-sm sm:text-[15px] text-text-primary group-hover:text-indigo-300 font-semibold truncate transition-colors">
+                  {ex.title}
+                </p>
+              </div>
+              <span className="text-indigo-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity font-bold">
+                →
+              </span>
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Micro Feature Chips */}
+      <div className="hidden sm:flex items-center justify-center gap-5 text-xs font-medium text-text-muted pt-2">
+        <span className="inline-flex items-center gap-1.5">
+          <Sparkles size={13} className="text-indigo-400" /> Side-by-Side Comparison
+        </span>
+        <span>•</span>
+        <span className="inline-flex items-center gap-1.5">
+          <Scale size={13} className="text-amber-400" /> Automated AI Judge
+        </span>
+        <span>•</span>
+        <span className="inline-flex items-center gap-1.5">
+          <Layers size={13} className="text-cyan-400" /> Granular Scoring
+        </span>
       </div>
     </div>
   );
@@ -66,29 +119,40 @@ function ResultsView({ data }) {
   const winnerNumber = judge.solution_1_score >= judge.solution_2_score ? 1 : 2;
 
   return (
-    <div className="space-y-5 animate-fade-in">
-      {/* Problem */}
+    <div className="space-y-6 animate-fade-in">
+      {/* Problem Card */}
       <ProblemCard problem={problem} />
 
-      {/* Solutions grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <SolutionCard
-          number={1}
-          content={solution_1}
-          score={judge.solution_1_score}
-          isWinner={winnerNumber === 1}
-          animDelay={0}
-        />
-        <SolutionCard
-          number={2}
-          content={solution_2}
-          score={judge.solution_2_score}
-          isWinner={winnerNumber === 2}
-          animDelay={100}
-        />
+      {/* Solutions Side-by-Side */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-text-muted">
+            Candidate Solutions
+          </span>
+          <span className="text-xs text-text-muted font-mono">
+            Side-by-Side Evaluation
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          <SolutionCard
+            number={1}
+            content={solution_1}
+            score={judge.solution_1_score}
+            isWinner={winnerNumber === 1}
+            animDelay={0}
+          />
+          <SolutionCard
+            number={2}
+            content={solution_2}
+            score={judge.solution_2_score}
+            isWinner={winnerNumber === 2}
+            animDelay={100}
+          />
+        </div>
       </div>
 
-      {/* Judge */}
+      {/* Judge Recommendation & Critique */}
       <JudgePanel judge={judge} />
     </div>
   );
@@ -99,7 +163,7 @@ export default function App() {
   const [status, setStatus] = useState("idle"); // idle | loading | done | error
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  const [currentPrompt, setCurrentPrompt] = useState(""); // Captures prompt context during ongoing requests
+  const [currentPrompt, setCurrentPrompt] = useState("");
 
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== "undefined") {
@@ -128,17 +192,22 @@ export default function App() {
     setIsDark((prev) => !prev);
   };
 
+  const handleReset = () => {
+    setStatus("idle");
+    setResult(null);
+    setError(null);
+    setCurrentPrompt("");
+  };
+
   const handleSubmit = async (prompt) => {
     setStatus("loading");
-    setCurrentPrompt(prompt); // Instantly preserve user prompt for the loader state
+    setCurrentPrompt(prompt);
     setResult(null);
     setError(null);
 
     try {
-      // Makes real network call via Axios inside mockApi
       const res = await fetchComparison(prompt);
 
-      // The backend packages data inside a 'data' property
       if (res.success && res.data) {
         setResult(res.data);
         setStatus("done");
@@ -152,23 +221,32 @@ export default function App() {
     }
   };
 
-  const handleExampleClick = (prompt) => {
-    handleSubmit(prompt);
-  };
-
   return (
-    <div className="min-h-screen bg-surface flex flex-col transition-colors duration-200">
-      <Header isDark={isDark} onToggleTheme={toggleTheme} />
+    <div className="min-h-screen bg-surface flex flex-col transition-colors duration-200 relative">
+      {/* Ambient background glows */}
+      <div className="ambient-bg" aria-hidden="true">
+        <div className="ambient-glow-1" />
+        <div className="ambient-glow-2" />
+      </div>
 
-      {/* Main layout frame */}
-      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 space-y-8">
+      {/* Header */}
+      <Header
+        isDark={isDark}
+        onToggleTheme={toggleTheme}
+        showNewBattle={status !== "idle"}
+        onNewBattle={handleReset}
+      />
+
+      {/* Main Layout Area - pb-44 ensures bottom fixed dock never covers content */}
+      <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 pb-44 sm:pb-48 relative z-10 flex flex-col">
         {status === "idle" && (
-          <EmptyState onExampleClick={handleExampleClick} />
+          <div className="flex-1 flex flex-col justify-center items-center min-h-[calc(100dvh-16rem)]">
+            <EmptyState onExampleClick={handleSubmit} />
+          </div>
         )}
 
         {status === "loading" && (
-          <div className="space-y-5 animate-fade-in">
-            {/* Renders your problem panel instantly to replicate Perplexity layout */}
+          <div className="space-y-6 animate-fade-in">
             <ProblemCard problem={currentPrompt} />
             <LoadingState />
           </div>
@@ -178,28 +256,41 @@ export default function App() {
           <ResultsView data={result} />
         )}
 
-        {/* Global sticky/floating prompt bar */}
-        <ChatInput onSubmit={handleSubmit} isLoading={status === "loading"} />
-
         {status === "error" && (
-          <div className="animate-fade-up card px-5 py-6 text-center space-y-3 border-red-500/20 bg-red-500/5">
-            <p className="text-sm font-semibold text-red-400">Execution Error</p>
-            <p className="text-xs text-text-secondary max-w-md mx-auto">{error}</p>
+          <div className="animate-fade-up card p-6 text-center space-y-3 border-rose-500/30 bg-rose-500/5 max-w-xl mx-auto shadow-lg my-auto">
+            <div className="w-10 h-10 rounded-full bg-rose-500/10 border border-rose-500/25 flex items-center justify-center text-rose-400 mx-auto">
+              <AlertCircle size={22} />
+            </div>
+            <p className="text-base font-bold text-rose-400">Execution Error</p>
+            <p className="text-sm text-text-secondary max-w-md mx-auto leading-relaxed">{error}</p>
             <button
-              onClick={() => setStatus("idle")}
-              className="btn-ghost mt-2 mx-auto text-xs px-4 py-1.5 border border-surface-border rounded-lg"
+              onClick={handleReset}
+              className="btn-ghost mt-2 mx-auto text-xs px-4 py-2 border border-surface-border rounded-xl flex items-center gap-1.5 hover:border-text-secondary/40 cursor-pointer"
             >
-              Dismiss & Try Again
+              <RefreshCw size={13} />
+              <span>Dismiss & Return to Arena</span>
             </button>
           </div>
         )}
       </main>
 
-      <footer className="border-t border-surface-border py-5 px-4 text-center">
-        <p className="text-xs text-text-muted">
-          AI Battle Arena — Compare, Evaluate, Choose
-        </p>
-      </footer>
+      {/* FIXED BOTTOM INPUT DOCK - Always fixed before and after response (like ChatGPT, Claude, Gemini) */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 sm:pb-6 pt-6 bg-gradient-to-t from-surface via-surface/95 to-transparent pointer-events-none">
+        <div className="max-w-3xl mx-auto pointer-events-auto">
+          <ChatInput
+            onSubmit={handleSubmit}
+            isLoading={status === "loading"}
+            placeholder={
+              status === "idle"
+                ? "Ask anything — compare two AI solutions side by side..."
+                : "Ask another prompt to trigger a new AI battle..."
+            }
+          />
+          <p className="text-[11px] sm:text-xs text-text-muted text-center mt-2.5 select-none">
+            AI Battle Arena compares independent LLMs. Scores provided by automated AI judge.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
