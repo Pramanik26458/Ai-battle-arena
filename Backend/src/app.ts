@@ -18,7 +18,7 @@ app.use(cors({
     if (!origin) return callback(null, true);
 
     // Allow localhost, configured FRONTEND_URL, or any *.vercel.app domain (production & previews)
-    const isVercel = /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(origin);
+    const isVercel = origin.endsWith(".vercel.app");
     if (allowedOrigins.includes(origin) || isVercel || !process.env.FRONTEND_URL) {
       return callback(null, true);
     }

@@ -23,5 +23,4 @@ export const cohereModel = new ChatCohere({
   model: "command-r-08-2024",
   apiKey: config.COHERE_API_KEY,
   temperature: 0.4,
-  maxTokens: 1024,
 });
