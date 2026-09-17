@@ -6,16 +6,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch server.ts"
+    "dev": "tsx watch server.ts",
+    "build": "tsc",
+    "start": "tsx server.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "@types/express": "^5.0.6",
-    "tsx": "^4.23.0",
-    "typescript": "^7.0.2"
-  },
   "dependencies": {
     "@langchain/cohere": "^1.1.0",
     "@langchain/core": "^1.2.2",
@@ -23,10 +20,14 @@
     "@langchain/langgraph": "^1.4.7",
     "@langchain/mistralai": "^1.2.0",
     "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "langchain": "^1.5.3",
+    "tsx": "^4.23.0",
+    "typescript": "^7.0.2",
     "zod": "^4.4.3"
-  }
+  },
+  "devDependencies": {}
 }

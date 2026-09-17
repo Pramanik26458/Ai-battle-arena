@@ -3,8 +3,8 @@ import axios from "axios";
 // Create a configured axios instance pointing to your TypeScript backend
 // Inside mockApi.jsx
 const api = axios.create({
-  baseURL: "http://127.0.0.1:3000", // <-- Change "localhost" to "127.0.0.1"
-  timeout: 45000,
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:3000",
+  timeout: 90000,
   headers: {
     "Content-Type": "application/json",
   }

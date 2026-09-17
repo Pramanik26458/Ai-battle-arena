@@ -44,8 +44,8 @@ const solutionNode: GraphNode<typeof state> = async (state) => {
   ]);
 
   return {
-    solution_1: extractContent(mistralResponse.content),
-    solution_2: extractContent(cohereResponse.content),
+    solution_1: extractContent((mistralResponse as any).content),
+    solution_2: extractContent((cohereResponse as any).content),
   };
 };
 
@@ -116,7 +116,7 @@ const graph = new StateGraph(state)
   .compile();
 
 export default async function runGraph(problem: string) {
-  const result = await graph.invoke({
+  const result = await (graph as any).invoke({
     problem,
   });
 

@@ -6,8 +6,24 @@ const app = express();
 
 app.use(express.json());
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL.replace(/\/$/, "")] : []),
+];
+
 app.use(cors({
-  origin: ["http://localhost:5173", "http://127.0.0.1:5173"], 
+  origin: (origin, callback) => {
+    // Allow non-browser requests (e.g. mobile apps, curl, server-to-server health checks)
+    if (!origin) return callback(null, true);
+
+    // Allow localhost, configured FRONTEND_URL, or any *.vercel.app domain (production & previews)
+    const isVercel = /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/.test(origin);
+    if (allowedOrigins.includes(origin) || isVercel || !process.env.FRONTEND_URL) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Origin ${origin} not allowed by CORS`));
+  },
   methods: ["GET", "POST"],
   credentials: true,
 }));
